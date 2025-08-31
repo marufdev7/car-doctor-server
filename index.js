@@ -62,10 +62,19 @@ async function run() {
 
         //services route
         app.get('/services', async (req, res) => {
-            const query = {};
+            const sort = req.query.sort;
+            const search = req.query?.search;
+            // const query = {};
+
+            // show items between 50 to 150
+            // const query = {price : {$gte: 50 , $lte: 150}}
+
+            const query = { title: { $regex: search,  $options: "i" } };
+
             const options = {
+                // sort matched document in descending order by rating
                 sort: {
-                    "price" : -1
+                    "price": sort === "asc" ? 1 : -1
                 }
             }
             const cursor = serviceCollection.find(query, options);
@@ -95,7 +104,7 @@ async function run() {
             // console.log(decoded);
 
             if (decoded.email !== req.query.email) {
-                return res.status(403).send({error: true, message: 'forbidden access'})
+                return res.status(403).send({ error: true, message: 'forbidden access' })
             }
 
             let query = {};
