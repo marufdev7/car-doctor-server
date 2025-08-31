@@ -69,6 +69,7 @@ async function run() {
             // show items between 50 to 150
             // const query = {price : {$gte: 50 , $lte: 150}}
 
+            // search using regex
             const query = { title: { $regex: search,  $options: "i" } };
 
             const options = {
